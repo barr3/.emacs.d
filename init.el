@@ -17,6 +17,7 @@
 (setq use-package-always-ensure t)
 
 (defvar barremacs/default-font-size 132)
+(defvar barremacs/smaller-font-size 110)
 (defvar barremacs/var-pitch-font-size 160)
 
 (setq inhibit-startup-message t)
@@ -33,6 +34,11 @@
 
 (column-number-mode)
 (global-display-line-numbers-mode t)
+
+(use-package doom-themes)
+(load-theme 'doom-one t)
+(setq doom-themes-treemacs-theme "doom-colors")
+(doom-themes-treemacs-config)
 
 (defun barremacs/set-font-faces ()
   (message "setting faces")
@@ -144,11 +150,14 @@
  "C-M-j" 'counsel-switch-buffer
  "C-M-," 'magit-status
  "C-M-k" 'kill-buffer-and-window
- "C-c a" 'org-agenda)
+ "C-c a" 'org-agenda
+ "C-M-f" 'treemacs)
 
 (barremacs/leader-keys
   "c" '(:ignore c :which-key "code")
-  "cc" '(comment-org-uncomment-region :which-key "comment"))
+  "cc" '(comment-or-uncomment-region :which-key "comment")
+  "t" '(:ignore t :which-key "toggles")
+  "tt" '(load-theme :which-key "theme"))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -204,6 +213,8 @@
 (use-package lsp-treemacs
   :after lsp)
 
+  (add-hook 'prog-mode-hook 'lsp)
+
 (use-package company
   :after lsp-mode
   :hook (lsp-mode . company-mode)
@@ -224,15 +235,8 @@
 (use-package csharp-mode
   :mode "\\.cs\\'"
   :hook (csharp-mode . lsp-deferred))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-enabled-themes '(tango-dark)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+
+(use-package treemacs)
+(use-package treemacs-projectile)
+
+(setq treemacs-width 28)
