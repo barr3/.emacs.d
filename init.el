@@ -40,6 +40,27 @@
 (setq doom-themes-treemacs-theme "doom-colors")
 (doom-themes-treemacs-config)
 
+(use-package doom-modeline
+:ensure t
+:init (doom-modeline-mode 1))
+
+
+(setq doom-modeline-height 10)
+(setq doom-modeline-project-detection 'project)
+(setq doom-modeline-major-mode-icon t)
+(setq doom-modeline-major-mode-color-icon t)
+(setq doom-modeline-buffer-state-icon nil)
+(setq doom-modeline-buffer-modification-icon nil)
+(setq doom-modeline-minor-modes nil)
+(setq doom-modeline-enable-word-count t)
+(setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+(setq doom-modeline-buffer-encoding nil)
+(setq doom-modeline-lsp t)
+
+(setq doom-modeline-height 10)
+(set-face-attribute 'mode-line nil :family "Fira Code" :height barremacs/smaller-font-size)
+(set-face-attribute 'mode-line-inactive nil :family "Fira Code" :height barremacs/smaller-font-size)
+
 (defun barremacs/set-font-faces ()
   (message "setting faces")
   (set-face-attribute 'default nil :font "Fira Code" :height barremacs/default-font-size))
@@ -157,7 +178,8 @@
   "c" '(:ignore c :which-key "code")
   "cc" '(comment-or-uncomment-region :which-key "comment")
   "t" '(:ignore t :which-key "toggles")
-  "tt" '(load-theme :which-key "theme"))
+  "tt" '(load-theme :which-key "theme")
+  "tl" '(toggle-truncate-lines :which-key "truncation"))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -213,7 +235,7 @@
 (use-package lsp-treemacs
   :after lsp)
 
-  (add-hook 'prog-mode-hook 'lsp)
+  (add-hook 'prog-mode-hook 'lsp-deferred)
 
 (use-package company
   :after lsp-mode
@@ -240,3 +262,13 @@
 (use-package treemacs-projectile)
 
 (setq treemacs-width 28)
+
+(defun toggle-fold ()
+(interactive)
+(save-excursion
+  (end-of-line)
+  (hs-toggle-hiding))
+
+  (toggle-fold))
+
+(set-default 'truncate-lines t)
