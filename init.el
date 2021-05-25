@@ -1,8 +1,8 @@
 (require 'package)
 
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("org" . "https://orgmode.org/elpa/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")))
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
 (unless package-archive-contents
@@ -35,14 +35,21 @@
 (column-number-mode)
 (global-display-line-numbers-mode t)
 
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                shell-mode-hook
+                treemacs-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
 (use-package doom-themes)
 (load-theme 'doom-one t)
 (setq doom-themes-treemacs-theme "doom-colors")
 (doom-themes-treemacs-config)
 
 (use-package doom-modeline
-:ensure t
-:init (doom-modeline-mode 1))
+  :ensure t
+  :init (doom-modeline-mode 1))
 
 
 (setq doom-modeline-height 10)
@@ -68,10 +75,10 @@
 ;;Sets the fonts correctly if running emacs in daemon mode.
 (if (daemonp)
     (add-hook 'after-make-frame-functions
-	      (lambda (frame)
-		(setq doom-modeline-icon t)
-		(with-selected-frame frame
-		  (barremacs/set-font-faces))))
+              (lambda (frame)
+                (setq doom-modeline-icon t)
+                (with-selected-frame frame
+                  (barremacs/set-font-faces))))
   (barremacs/set-font-faces))
 
 (use-package magit)
@@ -83,7 +90,7 @@
 
 (defun barremacs/org-babel-tangle-config ()
   (when (string-equal (file-name-directory (buffer-file-name))
-		      (expand-file-name "~/.emacs.d/"))
+                      (expand-file-name "~/.emacs.d/"))
 
     (let ((org-confirm-babel-evaluate nil))
       (org-babel-tangle))))
@@ -91,53 +98,112 @@
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'barremacs/org-babel-tangle-config)))
 
+(defun barremacs/org-font-setup ()
+  ;; Replaces list hyphen with a dot
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\)"
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+  ;;Set faces for heading levels
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+
+
+  ;;Ensure that anything that should be fixed pitch in org files appears that way
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil :inherit '(shadow fixed-pitch))
+
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
+
+(defun barremacs/org-mode-setup () 
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (visual-line-mode 1))
+
+(use-package org
+  :hook (org-mode . barremacs/org-mode-setup)  
+  :config
+  (setq org-ellipsis " ▾"
+        org-hide-emphasis-markers t)
+
+  (setq org-agenda-start-with-log-mode t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  (barremacs/org-font-setup))
+
+(use-package org-bullets
+  :after org
+  :hook (org-mode . org-bullets-mode)
+  :custom
+  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+(defun barremacs/org-mode-visual-fill ()
+  (setq visual-fill-column-width 100
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1 ))
+
+(use-package visual-fill-column
+  :defer t
+  :hook (org-mode . barremacs/org-mode-visual-fill))
+
 (setq mode-line-format
       (list "-"
-	    'mode-line-mule-info
-	    'mode-line-modified
-	    'mode-line-frame-identification
-	    "%b  "
+            'mode-line-mule-info
+            'mode-line-modified
+            'mode-line-frame-identification
+            "%b  "
 
-	    ;; Note that this is evaluated while making the list.
-	    ;; It makes a mode line construct which is just a string.
-	    (getenv "HOST")
-
-
-
-	    ;;":"
-	    'default-directory
-	    "   "
-	    ;;'global-mode-string
-	    ;;"   %[("
-	    ;;'(:eval (format-time-string "%F"))
-	    'mode-line-process
-	    'minor-mode-alist
-	    ;;"%n"
-	    ;;")%]--"
-
-	    '(which-function-mode ("" which-func-format "--"))
-	    '(line-number-mode "%l:")
-	    '(column-number-mode "%c ")
+            ;; Note that this is evaluated while making the list.
+            ;; It makes a mode line construct which is just a string.
+            (getenv "HOST")
 
 
-	    ;;'(-3 "%p")
-	    ))
+
+            ;;":"
+            'default-directory
+            "   "
+            ;;'global-mode-string
+            ;;"   %[("
+            ;;'(:eval (format-time-string "%F"))
+            'mode-line-process
+            'minor-mode-alist
+            ;;"%n"
+            ;;")%]--"
+
+            '(which-function-mode ("" which-func-format "--"))
+            '(line-number-mode "%l:")
+            '(column-number-mode "%c ")
+
+
+            ;;'(-3 "%p")
+            ))
 
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
-	 :map ivy-minibuffer-map
-	 ("TAB" . ivy-alt-done)
-	 ("C-l" . ivy-alt-done)
-	 ("C-j" . ivy-next-line)
-	 ("C-k" . ivy-previous-line)
-	 :map ivy-switch-buffer-map
-	 ("C-k" . ivy-previous-line)
-	 ("C-l" . ivy-done)
-	 ("C-d" . ivy-switch-buffer-kill)
-	 :map ivy-reverse-i-search-map
-	 ("C-k" . ivy-previous-line)
-	 ("C-d" . ivy-reverse-i-search-kill))
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
   :config
   (ivy-mode 1))
 
@@ -148,10 +214,10 @@
 
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
-	 ("C-x b" . counsel-ibuffer)
-	 ("C-x C-f" . counsel-find-file)
-	 :map minibuffer-local-map
-	 ("C-r" . 'counsel-minibuffer-history))
+         ("C-x b" . counsel-ibuffer)
+         ("C-x C-f" . counsel-find-file)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history))
   :custom
   (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only))
 
@@ -235,7 +301,7 @@
 (use-package lsp-treemacs
   :after lsp)
 
-  (add-hook 'prog-mode-hook 'lsp-deferred)
+(add-hook 'prog-mode-hook 'lsp-deferred)
 
 (use-package company
   :after lsp-mode
@@ -264,10 +330,10 @@
 (setq treemacs-width 28)
 
 (defun toggle-fold ()
-(interactive)
-(save-excursion
-  (end-of-line)
-  (hs-toggle-hiding))
+  (interactive)
+  (save-excursion
+    (end-of-line)
+    (hs-toggle-hiding))
 
   (toggle-fold))
 
