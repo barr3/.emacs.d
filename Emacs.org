@@ -61,35 +61,33 @@ Allows using external packages from ELPA and MELPA
 * Doom themes & Doom modeline
 #+begin_src emacs-lisp
 
-  (use-package doom-themes)
-  (load-theme 'doom-one t)
-  (setq doom-themes-treemacs-theme "doom-colors")
-  (doom-themes-treemacs-config)
-
-  (use-package doom-modeline
-    :ensure t
-    :init (doom-modeline-mode 1))
 
 
-  (setq doom-modeline-height 10)
-  (setq doom-modeline-project-detection 'project)
-  (setq doom-modeline-major-mode-icon t)
-  (setq doom-modeline-major-mode-color-icon t)
-  (setq doom-modeline-buffer-state-icon nil)
-  (setq doom-modeline-buffer-modification-icon nil)
-  (setq doom-modeline-minor-modes nil)
-  (setq doom-modeline-enable-word-count t)
-  (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
-  (setq doom-modeline-buffer-encoding t)
-  (setq doom-modeline-lsp t)
+  ;; (use-package doom-themes)
+  ;; (load-theme 'doom-one t)
+  ;; (setq doom-themes-treemacs-theme "doom-colors")
+  ;; (doom-themes-treemacs-config)
 
-  (setq doom-modeline-height 10)
-  (set-face-attribute 'mode-line nil :family "Fira Code" :height barremacs/smaller-font-size)
-  (set-face-attribute 'mode-line-inactive nil :family "Fira Code" :height barremacs/smaller-font-size)
+  ;; (use-package doom-modeline
+  ;;   :ensure t
+  ;;   :init (doom-modeline-mode 1))
 
 
+  ;; (setq doom-modeline-height 10)
+  ;; (setq doom-modeline-project-detection 'project)
+  ;; (setq doom-modeline-major-mode-icon t)
+  ;; (setq doom-modeline-major-mode-color-icon t)
+  ;; (setq doom-modeline-buffer-state-icon nil)
+  ;; (setq doom-modeline-buffer-modification-icon nil)
+  ;; (setq doom-modeline-minor-modes nil)
+  ;; (setq doom-modeline-enable-word-count t)
+  ;; (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+  ;; (setq doom-modeline-buffer-encoding t)
+  ;; (setq doom-modeline-lsp t)
 
-
+  ;; (setq doom-modeline-height 10)
+  ;; (set-face-attribute 'mode-line nil :family "Fira Code" :height barremacs/smaller-font-size)
+  ;; (set-face-attribute 'mode-line-inactive nil :family "Fira Code" :height barremacs/smaller-font-size)
 
 
 
@@ -99,6 +97,53 @@ Allows using external packages from ELPA and MELPA
 
 
 
+
+
+
+
+
+
+#+end_src
+* Theme and modeline (not doom)
+#+begin_src emacs-lisp
+
+    (load-theme 'adwaita)
+
+
+  (setq-default mode-line-format
+        (list
+       " "
+       '(:eval mode-name)
+
+         '(:eval (when-let (vc vc-mode)
+                   (list " "
+                         (propertize (substring vc 5)
+                                     'face 'font-lock-comment-face)
+                         " ")))
+
+
+
+
+
+         '(:eval
+           (list
+            (propertize " %b " 'help-echo (buffer-file-name))
+            (when (buffer-modified-p)
+              (propertize (all-the-icons-faicon "file"
+                                                :face 'all-the-icons-icon-for-mode
+                                                :height 0.7
+                                                :v-adjust 0.01
+                                                )))
+            (when buffer-read-only
+              (propertize (all-the-icons-faicon "lock"
+                                                :face 'all-the-icons-icon-for-mode
+                                                :height 0.7
+                                              :v-adjust 0.001
+                                                )))))
+       "  line %l"
+       "               Overhead the albatross hangs motionless up on the air...                   "
+
+         ))
 
 
 #+end_src

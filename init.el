@@ -42,31 +42,69 @@
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(use-package doom-themes)
-(load-theme 'doom-one t)
-(setq doom-themes-treemacs-theme "doom-colors")
-(doom-themes-treemacs-config)
+;; (use-package doom-themes)
+;; (load-theme 'doom-one t)
+;; (setq doom-themes-treemacs-theme "doom-colors")
+;; (doom-themes-treemacs-config)
 
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1))
+;; (use-package doom-modeline
+;;   :ensure t
+;;   :init (doom-modeline-mode 1))
 
 
-(setq doom-modeline-height 10)
-(setq doom-modeline-project-detection 'project)
-(setq doom-modeline-major-mode-icon t)
-(setq doom-modeline-major-mode-color-icon t)
-(setq doom-modeline-buffer-state-icon nil)
-(setq doom-modeline-buffer-modification-icon nil)
-(setq doom-modeline-minor-modes nil)
-(setq doom-modeline-enable-word-count t)
-(setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
-(setq doom-modeline-buffer-encoding t)
-(setq doom-modeline-lsp t)
+;; (setq doom-modeline-height 10)
+;; (setq doom-modeline-project-detection 'project)
+;; (setq doom-modeline-major-mode-icon t)
+;; (setq doom-modeline-major-mode-color-icon t)
+;; (setq doom-modeline-buffer-state-icon nil)
+;; (setq doom-modeline-buffer-modification-icon nil)
+;; (setq doom-modeline-minor-modes nil)
+;; (setq doom-modeline-enable-word-count t)
+;; (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+;; (setq doom-modeline-buffer-encoding t)
+;; (setq doom-modeline-lsp t)
 
-(setq doom-modeline-height 10)
-(set-face-attribute 'mode-line nil :family "Fira Code" :height barremacs/smaller-font-size)
-(set-face-attribute 'mode-line-inactive nil :family "Fira Code" :height barremacs/smaller-font-size)
+;; (setq doom-modeline-height 10)
+;; (set-face-attribute 'mode-line nil :family "Fira Code" :height barremacs/smaller-font-size)
+;; (set-face-attribute 'mode-line-inactive nil :family "Fira Code" :height barremacs/smaller-font-size)
+
+(load-theme 'adwaita)
+
+
+(setq-default mode-line-format
+      (list
+     " "
+     '(:eval mode-name)
+
+       '(:eval (when-let (vc vc-mode)
+                 (list " "
+                       (propertize (substring vc 5)
+                                   'face 'font-lock-comment-face)
+                       " ")))
+
+
+
+
+
+       '(:eval
+         (list
+          (propertize " %b " 'help-echo (buffer-file-name))
+          (when (buffer-modified-p)
+            (propertize (all-the-icons-faicon "file"
+                                              :face 'all-the-icons-icon-for-mode
+                                              :height 0.7
+                                              :v-adjust 0.01
+                                              )))
+          (when buffer-read-only
+            (propertize (all-the-icons-faicon "lock"
+                                              :face 'all-the-icons-icon-for-mode
+                                              :height 0.7
+                                            :v-adjust 0.001
+                                              )))))
+     "  line %l"
+     "               Overhead the albatross hangs motionless up on the air...                   "
+
+       ))
 
 (defun barremacs/set-font-faces ()
   (message "setting faces")
@@ -340,18 +378,3 @@
   (toggle-fold))
 
 (set-default 'truncate-lines t)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("aaa4c36ce00e572784d424554dcc9641c82d1155370770e231e10c649b59a074" "56d10d2b60685d112dd54f4ba68a173c102eacc2a6048d417998249085383da1" "2c49d6ac8c0bf19648c9d2eabec9b246d46cb94d83713eaae4f26b49a8183fc4" default))
- '(package-selected-packages
-   '(visual-fill-column org-bullets zenburn-theme yasnippet-snippets which-key use-package treemacs-projectile rainbow-delimiters origami magit lsp-ui lsp-treemacs js2-mode ivy-rich helpful general doom-themes doom-modeline csharp-mode counsel-projectile company centaur-tabs)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
