@@ -61,7 +61,7 @@
 (setq doom-modeline-minor-modes nil)
 (setq doom-modeline-enable-word-count t)
 (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
-(setq doom-modeline-buffer-encoding nil)
+(setq doom-modeline-buffer-encoding t)
 (setq doom-modeline-lsp t)
 
 (setq doom-modeline-height 10)
@@ -238,7 +238,9 @@
  "C-M-," 'magit-status
  "C-M-k" 'kill-buffer-and-window
  "C-c a" 'org-agenda
- "C-M-f" 'treemacs)
+ "C-M-f" 'treemacs
+ "M-k" 'windmove-right
+ "M-j" 'windmove-left)
 
 (barremacs/leader-keys
   "c" '(:ignore c :which-key "code")
@@ -327,7 +329,7 @@
 (use-package treemacs)
 (use-package treemacs-projectile)
 
-(setq treemacs-width 28)
+(setq treemacs-width 24)
 
 (defun toggle-fold ()
   (interactive)
@@ -338,3 +340,18 @@
   (toggle-fold))
 
 (set-default 'truncate-lines t)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("aaa4c36ce00e572784d424554dcc9641c82d1155370770e231e10c649b59a074" "56d10d2b60685d112dd54f4ba68a173c102eacc2a6048d417998249085383da1" "2c49d6ac8c0bf19648c9d2eabec9b246d46cb94d83713eaae4f26b49a8183fc4" default))
+ '(package-selected-packages
+   '(visual-fill-column org-bullets zenburn-theme yasnippet-snippets which-key use-package treemacs-projectile rainbow-delimiters origami magit lsp-ui lsp-treemacs js2-mode ivy-rich helpful general doom-themes doom-modeline csharp-mode counsel-projectile company centaur-tabs)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

@@ -80,7 +80,7 @@ Allows using external packages from ELPA and MELPA
   (setq doom-modeline-minor-modes nil)
   (setq doom-modeline-enable-word-count t)
   (setq doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
-  (setq doom-modeline-buffer-encoding nil)
+  (setq doom-modeline-buffer-encoding t)
   (setq doom-modeline-lsp t)
 
   (setq doom-modeline-height 10)
@@ -345,7 +345,9 @@ Allows for using <el or <sh et.c to quickly insert source code blocks
    "C-M-," 'magit-status
    "C-M-k" 'kill-buffer-and-window
    "C-c a" 'org-agenda
-   "C-M-f" 'treemacs)
+   "C-M-f" 'treemacs
+   "M-k" 'windmove-right
+   "M-j" 'windmove-left)
 
   (barremacs/leader-keys
     "c" '(:ignore c :which-key "code")
@@ -481,7 +483,7 @@ Adds more helpful help commands.
   (use-package treemacs)
   (use-package treemacs-projectile)
 
-  (setq treemacs-width 28)
+  (setq treemacs-width 24)
 
 
 
