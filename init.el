@@ -68,7 +68,7 @@
 ;; (set-face-attribute 'mode-line nil :family "Fira Code" :height barremacs/smaller-font-size)
 ;; (set-face-attribute 'mode-line-inactive nil :family "Fira Code" :height barremacs/smaller-font-size)
 
-(load-theme 'adwaita)
+(load-theme 'wombat)
 
 
 (setq-default mode-line-format
