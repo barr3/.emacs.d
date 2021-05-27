@@ -107,7 +107,7 @@ Allows using external packages from ELPA and MELPA
 * Theme and modeline (not doom)
 #+begin_src emacs-lisp
 
-    (load-theme 'wombat)
+    (load-theme 'doom-gruvbox-light)
 
 
   (setq-default mode-line-format
