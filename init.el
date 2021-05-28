@@ -283,6 +283,10 @@
 (barremacs/leader-keys
   "c" '(:ignore c :which-key "code")
   "cc" '(comment-or-uncomment-region :which-key "comment")
+  "cf" '(hs-hide-block :which-key "fold")
+  "cd" '(hs-show-block :which-key "unfold")
+  "ca" '(hs-hide-all :which-key "fold all")
+  "cu" '(hs-show-all :which-key "unfold all")
   "t" '(:ignore t :which-key "toggles")
   "tt" '(load-theme :which-key "theme")
   "tl" '(toggle-truncate-lines :which-key "truncation"))
@@ -377,4 +381,8 @@
 
   (toggle-fold))
 
+(add-hook 'prog-mode 'hs-minor-mode)
+
 (set-default 'truncate-lines t)
+
+(add-hook 'prog-mode 'electric-pair-mode)
