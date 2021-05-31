@@ -68,7 +68,7 @@
 ;; (set-face-attribute 'mode-line nil :family "Fira Code" :height barremacs/smaller-font-size)
 ;; (set-face-attribute 'mode-line-inactive nil :family "Fira Code" :height barremacs/smaller-font-size)
 
-(load-theme 'doom-gruvbox-light)
+(load-theme 'doom-one t)
 
 
 (setq-default mode-line-format
@@ -381,8 +381,11 @@
 
   (toggle-fold))
 
-(add-hook 'prog-mode 'hs-minor-mode)
+(add-hook 'prog-mode-hook 'hs-minor-mode)
 
 (set-default 'truncate-lines t)
 
-(add-hook 'prog-mode 'electric-pair-mode)
+(add-hook 'prog-mode-hook 'electric-pair-mode)
+
+(set-frame-parameter (selected-frame) 'alpha '(98 . 98))
+(add-to-list 'default-frame-alist '(alpha . (98 . 98)))

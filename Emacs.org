@@ -107,7 +107,7 @@ Allows using external packages from ELPA and MELPA
 * Theme and modeline (not doom)
 #+begin_src emacs-lisp
 
-    (load-theme 'doom-gruvbox-light)
+    (load-theme 'doom-one t)
 
 
   (setq-default mode-line-format
@@ -540,15 +540,15 @@ Adds more helpful help commands.
 * Code folding 
 #+begin_src emacs-lisp
 
-  (defun toggle-fold ()
-    (interactive)
-    (save-excursion
-      (end-of-line)
-      (hs-toggle-hiding))
+    (defun toggle-fold ()
+      (interactive)
+      (save-excursion
+        (end-of-line)
+        (hs-toggle-hiding))
 
-    (toggle-fold))
+      (toggle-fold))
 
-  (add-hook 'prog-mode 'hs-minor-mode)
+    (add-hook 'prog-mode-hook 'hs-minor-mode)
 
 
 #+end_src
@@ -562,6 +562,28 @@ Adds more helpful help commands.
 * Automatic parenthesis
 #+begin_src emacs-lisp
 
-(add-hook 'prog-mode 'electric-pair-mode)
+(add-hook 'prog-mode-hook 'electric-pair-mode)
+
+#+end_src
+
+* Highlight indentation
+#+begin_src emacs-lisp
+
+;(use-package highlight-indent-guides)
+;(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+;(setq highlight-indent-guides-method 'character)
+;(setq highlight-indent-guides-character '?|)
+
+;(setq highlight-indent-guides-auto-odd-face-perc 50)
+;(setq highlight-indent-guides-auto-even-face-perc 50)
+;(setq highlight-indent-guides-auto-character-face-perc 50)
+
+#+end_src>
+
+* Transparency
+#+begin_src emacs-lisp
+
+ (set-frame-parameter (selected-frame) 'alpha '(98 . 98))
+ (add-to-list 'default-frame-alist '(alpha . (98 . 98)))
 
 #+end_src
