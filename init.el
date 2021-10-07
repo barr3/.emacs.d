@@ -194,6 +194,8 @@
   :defer t
   :hook (org-mode . barremacs/org-mode-visual-fill))
 
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.6))
+
 (setq mode-line-format
       (list "-"
             'mode-line-mule-info
